@@ -1,7 +1,11 @@
 #include <iostream>
 #include <string>
 #include <format>
-using std::endl, std::string;
+#include <vector>
+
+using std::endl;
+using std::string;
+using std::vector;
 
 using Number = long long;
 
@@ -33,9 +37,23 @@ void findFactors(Number n) {
     }
 }
 
+void sieveOfEratosthenes(Number n) {
+    vector<bool> flags(n);
+
+    for (Number i = 2; i < n; i++) {
+        if (flags[i]) continue;
+
+        std::cout << std::format("{} ", i);
+
+        for (Number j = i + i; j < n; j += i) {
+            flags[j] = true;
+        }
+    }
+}
+
 int main() {
     while (true) {
-        std::cout << "Enter a number to check for factors:" << endl;
+        std::cout << std::format("Enter a number up to {}:", std::numeric_limits<long long>::max()) << endl;
         Number val = 0;
 
         prompt_string(val);
@@ -45,10 +63,15 @@ int main() {
             return 0;
         }
 
-        std::cout << std::format("Let's find factors! {}\n", val);
-
+        std::cout << std::format("Factors of {}:\n", val);
         findFactors(val);
-        std::cout << endl;
+        std::cout << endl << endl;
+
+        if (val < 1000000) {
+            std::cout << std::format("Finding prime numbers up to {}.\n  ", val);
+            sieveOfEratosthenes(val);
+            std::cout << endl << endl;
+        }
     }
 }
 
